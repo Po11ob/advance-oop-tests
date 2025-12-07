@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS habits (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT,
+  frequency TEXT,
+  status INTEGER DEFAULT 0,
+  note TEXT
+);

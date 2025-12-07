@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Habit Tracker — Dashboard</title>
+  <style>
+    body{font-family:system-ui,Segoe UI,Roboto,Helvetica,Arial;max-width:900px;margin:24px auto;padding:0 16px}
+    h1{display:flex;align-items:center;gap:12px}
+    .card{border:1px solid #e6e6e6;border-radius:8px;padding:12px;margin:12px 0}
+    label{display:block;margin:6px 0;font-size:14px}
+    input,select,textarea{width:100%;padding:8px;margin-top:4px;border:1px solid #ddd;border-radius:6px}
+    button{padding:8px 12px;border-radius:6px;border:0;background:#0366d6;color:#fff;cursor:pointer}
+    .muted{color:#666;font-size:13px}
+    .flex{display:flex;gap:8px;align-items:center}
+  </style>
+</head>
+<body>
+  <h1>Habit Tracker — Dashboard</h1>
+
+  <section class="card">
+    <strong>Create Habit</strong>
+    <div style="margin-top:8px">
+      <label>Name <input id="name" /></label>
+      <label>Frequency <input id="frequency" placeholder="daily / weekly" /></label>
+      <label>Note <textarea id="note" rows="2"></textarea></label>
+      <label class="flex"><input type="checkbox" id="status" /> <span class="muted">Completed</span></label>
+      <div style="margin-top:8px"><button id="create">Create</button></div>
+    </div>
+  </section>
+
+  <section>
+    <!doctype html>
+    <html lang="en">
+      <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <title>Habit Tracker — Dashboard</title>
+        <style>
+          :root{
+            --bg:#f6f8fa; --card:#ffffff; --muted:#6b7280; --accent:#0f62fe; --accent-2:#2563eb;
+            --radius:10px; --shadow: 0 6px 18px rgba(12,18,28,0.08);
+            --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, 'Roboto Mono', monospace;
+          }
+          html,body{height:100%;margin:0}
+          body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial; background:var(--bg); color:#0f172a}
+          .app{display:grid;grid-template-columns:260px 1fr 340px;gap:20px;padding:28px;max-width:1200px;margin:0 auto}
+          .panel{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px}
+          header{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;padding:18px 28px;margin-bottom:8px}
+          h1{font-size:20px;margin:0}
+          .muted{color:var(--muted);font-size:13px}
+          .clients{height:760px;display:flex;flex-direction:column}
+          .client-list{overflow:auto;padding-right:6px}
+          .client{display:flex;align-items:center;gap:12px;padding:10px;border-radius:8px;cursor:pointer}
+          .avatar{width:40px;height:40px;border-radius:8px;background:linear-gradient(135deg,#60a5fa,#7c3aed);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700}
+          .main{min-height:760px}
+          .create{display:grid;grid-template-columns:1fr 160px;gap:12px}
+          label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
+          input,textarea,select{width:100%;padding:10px;border:1px solid #e6eef6;border-radius:8px;font-size:14px}
+          .actions{display:flex;gap:8px;align-items:center}
+          .btn{background:var(--accent);color:white;padding:10px 14px;border-radius:8px;border:0;cursor:pointer}
+          .secondary{background:#eef2ff;color:var(--accent-2)}
+          .habits-list{margin-top:14px;display:flex;flex-direction:column;gap:12px}
+          .habit{display:flex;justify-content:space-between;align-items:center;padding:12px;border-radius:8px;border:1px solid #eef2f6}
+          .note{color:var(--muted);font-size:13px;margin-top:6px}
+          .analytics{height:760px;display:flex;flex-direction:column;gap:12px}
+          .bar{height:10px;background:#e6eef6;border-radius:6px;position:relative}
+          .bar > i{position:absolute;left:0;top:0;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2));border-radius:6px}
+          footer{grid-column:1/-1;text-align:center;color:var(--muted);padding:18px}
+          @media (max-width:1000px){.app{grid-template-columns:1fr;}.clients{order:2}.analytics{order:3}}
+        </style>
+      </head>
+      <body>
+        <header>
+          <div style="display:flex;gap:18px;align-items:center">
+            <h1>Habit Tracker</h1>
+            <div class="muted">Professional dashboard</div>
+          </div>
+          <div class="muted">Server: <strong>local</strong> · <span id="serverStatus">online</span></div>
+        </header>
+
+        <div class="app">
+          <aside class="panel clients">
+            <div class="title"><strong>Clients</strong><button class="secondary" id="regen">Regenerate</button></div>
+            <div class="client-list" id="clients"></div>
+            <div style="margin-top:auto" class="muted">Simulated clients show daily usage (frontend-only)</div>
+          </aside>
+
+          <main class="panel main">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+              <div>
+                <div class="muted">Manage habits</div>
+                <h2 style="margin:6px 0 0 0">Your habits</h2>
+              </div>
+              <div class="actions">
+                <button class="secondary" id="refresh">Refresh</button>
+                <button class="btn" id="simulate">Simulate Day</button>
+              </div>
+            </div>
+
+            <div class="create">
+              <div>
+                <label for="name">Habit name</label>
+                <input id="name" placeholder="e.g. Morning Run" />
+                <label style="margin-top:8px">Frequency</label>
+                <input id="frequency" placeholder="daily / weekly" />
+                <label style="margin-top:8px">Note</label>
+                <textarea id="note" rows="2" placeholder="Short note"></textarea>
+              </div>
+              <div>
+                <label class="muted">Completed</label>
+                <div style="margin-bottom:12px"><input type="checkbox" id="status" /> <span class="muted">(mark initial state)</span></div>
+                <div style="margin-top:18px"><button class="btn" id="create">Create habit</button></div>
+              </div>
+            </div>
+
+            <div class="habits-list" id="list"></div>
+          </main>
+
+          <aside class="panel analytics">
+            <div>
+              <strong>Daily Usage (simulated)</strong>
+              <div class="muted">Overview of simulated client activity</div>
+            </div>
+            <div id="usage"></div>
+            <div>
+              <strong>Top habits</strong>
+              <div class="muted">Most completed habits (based on simulation)</div>
+              <div id="topHabits" style="margin-top:8px"></div>
+            </div>
+          </aside>
+        </div>
+
+        <footer class="muted">Backend + static UI running locally · API: <code>/habits</code></footer>
+
+        <script>
+          const BASE = ''
+          function el(tag, cls){ const d=document.createElement(tag); if(cls) d.className=cls; return d }
+          function escapeHtml(s){ if (s===null||s===undefined) return ''; return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;') }
+
+          async function request(path, opts={}){
+            const res = await fetch(BASE + path, Object.assign({headers:{'Content-Type':'application/json'}}, opts))
+            if (!res.ok) { const t = await res.text(); throw new Error(`${res.status} ${res.statusText}: ${t}`) }
+            if (res.status === 204) return null
+            return res.json()
+          }
+
+          async function loadHabits(){
+            const list = document.getElementById('list'); list.innerHTML = '<div class="muted">Loading...</div>'
+            try{
+              const habits = await request('/habits')
+              if (!habits || habits.length===0){ list.innerHTML = '<div class="muted">No habits yet</div>'; return }
+              list.innerHTML = ''
+              habits.forEach(h => {
+                const row = el('div','habit')
+                const meta = el('div','meta')
+                const title = el('div'); title.innerHTML = `<strong>${escapeHtml(h.name)}</strong> <div class="muted">${escapeHtml(h.frequency||'')}</div>`
+                meta.appendChild(title)
+                const note = el('div','note'); note.textContent = h.note || ''
+                meta.appendChild(note)
+                row.appendChild(meta)
+
+                const controls = el('div')
+                const cb = document.createElement('input'); cb.type='checkbox'; cb.checked = Boolean(h.status); cb.onchange = async ()=>{ try{ await request(`/habits/${h.id}`, {method:'PATCH', body: JSON.stringify({status: cb.checked})}); loadHabits(); }catch(e){ alert(e.message) } }
+                controls.appendChild(cb)
+                const del = document.createElement('button'); del.textContent='Delete'; del.style.marginLeft='8px'; del.onclick = async ()=>{ if(!confirm('Delete habit?')) return; await request(`/habits/${h.id}`, {method:'DELETE'}); loadHabits(); }
+                controls.appendChild(del)
+                row.appendChild(controls)
+                list.appendChild(row)
+              })
+            }catch(err){ list.innerHTML = '<div class="muted">Error: '+escapeHtml(err.message)+'</div>' }
+          }
+
+          document.getElementById('refresh').onclick = loadHabits
+          document.getElementById('create').onclick = async ()=>{
+            const name = document.getElementById('name').value.trim(); if(!name){ alert('Name required'); return }
+            const frequency = document.getElementById('frequency').value.trim(); const note = document.getElementById('note').value.trim(); const status = document.getElementById('status').checked
+            try{ await request('/habits', {method:'POST', body: JSON.stringify({name,frequency,note,status})}); document.getElementById('name').value=''; document.getElementById('frequency').value=''; document.getElementById('note').value=''; document.getElementById('status').checked=false; loadHabits(); }catch(e){ alert(e.message) }
+          }
+
+          const NAMES = ['Acme Corp','Oakside Ltd','Bluebird','Greenfield','Stellar Inc','Nimbus']
+          function rand(seed, min, max){ const x=Math.abs(Math.sin(seed*9301+49297))*10000; return min + Math.floor((x % 1)*(max-min+1)) }
+          function makeClients(){ const clients = []; for(let i=0;i<6;i++){ const id = i+1; const name=NAMES[i%NAMES.length]; const days = Array.from({length:7}, (_,d) => Math.max(0, rand(id*13+d, 0, 5))); clients.push({id,name,days,lastActive: new Date(Date.now()-rand(id,0,6)*86400000)}); } return clients }
+          let clients = makeClients()
+          function renderClients(){ const wrap = document.getElementById('clients'); wrap.innerHTML=''; clients.forEach(c =>{ const elc = el('div','client'); const avat = el('div','avatar'); avat.textContent = c.name.split(' ').map(s=>s[0]).slice(0,2).join(''); const meta = el('div'); meta.innerHTML = `<div><strong>${escapeHtml(c.name)}</strong></div><div class="muted">Last active: ${new Date(c.lastActive).toLocaleDateString()}</div>`; const total = c.days.reduce((a,b)=>a+b,0); const stat = el('div'); stat.className='muted'; stat.style.marginLeft='auto'; stat.textContent = `${total} ops`; elc.appendChild(avat); elc.appendChild(meta); elc.appendChild(stat); wrap.appendChild(elc) }) }
+          function renderUsage(){ const u = document.getElementById('usage'); u.innerHTML=''; clients.forEach(c =>{ const wrap = el('div'); wrap.style.marginBottom='10px'; const hdr = el('div'); hdr.style.display='flex'; hdr.style.justifyContent='space-between'; hdr.innerHTML=`<div><strong>${escapeHtml(c.name)}</strong></div><div class="muted">${c.days.reduce((a,b)=>a+b,0)} actions</div>`; wrap.appendChild(hdr); const bars = el('div'); bars.style.display='flex'; bars.style.gap='6px'; bars.style.marginTop='6px'; c.days.forEach(v => { const b = el('div'); b.style.width='100%'; b.innerHTML = `<div class="bar"><i style="width:${Math.min(100,v*20)}%"></i></div>`; bars.appendChild(b) }); wrap.appendChild(bars); u.appendChild(wrap) }) }
+          document.getElementById('regen').onclick = ()=>{ clients = makeClients(); renderClients(); renderUsage(); }
+          document.getElementById('simulate').onclick = ()=>{ clients.forEach((c,i)=>{ c.days.shift(); c.days.push(Math.floor(Math.random()*6)); c.lastActive = new Date() }); renderClients(); renderUsage(); }
+          function renderTopHabits(){ const node = document.getElementById('topHabits'); node.innerHTML=''; request('/habits').then(habits =>{ const scored = habits.map(h=>({h,score: Math.abs(hashCode(h.name)) % 100})).sort((a,b)=>b.score-a.score).slice(0,5); scored.forEach(s => { const r = el('div'); r.style.display='flex'; r.style.justifyContent='space-between'; r.style.marginTop='8px'; r.innerHTML = `<div>${escapeHtml(s.h.name)}</div><div class="muted">${s.score}%</div>`; node.appendChild(r) }) }).catch(()=>{ node.innerHTML = '<div class="muted">No data</div>' }) }
+          function hashCode(str){ let h=0; for(let i=0;i<str.length;i++){ h = (Math.imul(31,h) + str.charCodeAt(i))|0 } return h }
+          renderClients(); renderUsage(); loadHabits(); renderTopHabits();
+        </script>
+      </body>
+    </html>
+
+                <div class="habits-list" id="list"></div>
+              </main>
+
+              <aside class="panel analytics">
+                <div>
+                  <strong>Daily Usage (simulated)</strong>
+                  <div class="muted">Overview of simulated client activity</div>
+                </div>
+                <div id="usage"></div>
+                <div>
+                  <strong>Top habits</strong>
+                  <div class="muted">Most completed habits (based on simulation)</div>
+                  <div id="topHabits" style="margin-top:8px"></div>
+                </div>
+              </aside>
+            </div>
+
+            <footer class="muted">Backend + static UI running locally · API: <code>/habits</code></footer>
+
+            <script>
+              const BASE = ''
+              // --- utility
+              function el(tag, cls){ const d=document.createElement(tag); if(cls) d.className=cls; return d }
+              function escapeHtml(s){ if (s===null||s===undefined) return ''; return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;') }
+
+              async function request(path, opts={}){
+                const res = await fetch(BASE + path, Object.assign({headers:{'Content-Type':'application/json'}}, opts))
+                if (!res.ok) { const t = await res.text(); throw new Error(`${res.status} ${res.statusText}: ${t}`) }
+                if (res.status === 204) return null
+                return res.json()
+              }
+
+              // --- habits
+              async function loadHabits(){
+                const list = document.getElementById('list'); list.innerHTML = '<div class="muted">Loading...</div>'
+                try{
+                  const habits = await request('/habits')
+                  if (!habits || habits.length===0){ list.innerHTML = '<div class="muted">No habits yet</div>'; return }
+                  list.innerHTML = ''
+                  habits.forEach(h => {
+                    const row = el('div','habit')
+                    const meta = el('div','meta')
+                    const title = el('div'); title.innerHTML = `<strong>${escapeHtml(h.name)}</strong> <div class="muted">${escapeHtml(h.frequency||'')}</div>`
+                    meta.appendChild(title)
+                    const note = el('div','note'); note.textContent = h.note || ''
+                    meta.appendChild(note)
+                    row.appendChild(meta)
+
+                    const controls = el('div')
+                    const cb = document.createElement('input'); cb.type='checkbox'; cb.checked = Boolean(h.status); cb.onchange = async ()=>{ try{ await request(`/habits/${h.id}`, {method:'PATCH', body: JSON.stringify({status: cb.checked})}); loadHabits(); }catch(e){ alert(e.message) } }
+                    controls.appendChild(cb)
+                    const del = document.createElement('button'); del.textContent='Delete'; del.style.marginLeft='8px'; del.onclick = async ()=>{ if(!confirm('Delete habit?')) return; await request(`/habits/${h.id}`, {method:'DELETE'}); loadHabits(); }
+                    controls.appendChild(del)
+                    row.appendChild(controls)
+                    list.appendChild(row)
+                  })
+                }catch(err){ list.innerHTML = '<div class="muted">Error: '+escapeHtml(err.message)+'</div>' }
+              }
+
+              document.getElementById('refresh').onclick = loadHabits
+              document.getElementById('create').onclick = async ()=>{
+                const name = document.getElementById('name').value.trim(); if(!name){ alert('Name required'); return }
+                const frequency = document.getElementById('frequency').value.trim(); const note = document.getElementById('note').value.trim(); const status = document.getElementById('status').checked
+                try{ await request('/habits', {method:'POST', body: JSON.stringify({name,frequency,note,status})}); document.getElementById('name').value=''; document.getElementById('frequency').value=''; document.getElementById('note').value=''; document.getElementById('status').checked=false; loadHabits(); }catch(e){ alert(e.message) }
+              }
+
+              // --- fake clients simulation (frontend-only) ---
+              const NAMES = ['Acme Corp','Oakside Ltd','Bluebird','Greenfield','Stellar Inc','Nimbus']
+              function rand(seed, min, max){ const x=Math.abs(Math.sin(seed*9301+49297))*10000; return min + Math.floor((x % 1)*(max-min+1)) }
+
+              function makeClients(){
+                const clients = []; for(let i=0;i<6;i++){
+                  const id = i+1; const name=NAMES[i%NAMES.length];
+                  // generate 7-day activity numbers
+                  const days = Array.from({length:7}, (_,d) => Math.max(0, rand(id*13+d, 0, 5)))
+                  clients.push({id,name,days,lastActive: new Date(Date.now()-rand(id,0,6)*86400000)})
+                }
+                return clients
+              }
+
+              let clients = makeClients()
+
+              function renderClients(){
+                const wrap = document.getElementById('clients'); wrap.innerHTML=''
+                clients.forEach(c =>{
+                  const elc = el('div','client')
+                  const avat = el('div','avatar'); avat.textContent = c.name.split(' ').map(s=>s[0]).slice(0,2).join('')
+                  const meta = el('div'); meta.innerHTML = `<div><strong>${escapeHtml(c.name)}</strong></div><div class="muted">Last active: ${new Date(c.lastActive).toLocaleDateString()}</div>`
+                  const total = c.days.reduce((a,b)=>a+b,0)
+                  const stat = el('div'); stat.className='muted'; stat.style.marginLeft='auto'; stat.textContent = `${total} ops`;
+                  elc.appendChild(avat); elc.appendChild(meta); elc.appendChild(stat);
+                  wrap.appendChild(elc)
+                })
+              }
+
+              function renderUsage(){
+                const u = document.getElementById('usage'); u.innerHTML=''
+                clients.forEach(c =>{
+                  const wrap = el('div'); wrap.style.marginBottom='10px'
+                  const hdr = el('div'); hdr.style.display='flex'; hdr.style.justifyContent='space-between'; hdr.innerHTML=`<div><strong>${escapeHtml(c.name)}</strong></div><div class="muted">${c.days.reduce((a,b)=>a+b,0)} actions</div>`
+                  wrap.appendChild(hdr)
+                  const bars = el('div'); bars.style.display='flex'; bars.style.gap='6px'; bars.style.marginTop='6px'
+                  c.days.forEach(v => { const b = el('div'); b.style.width='100%'; b.innerHTML = `<div class="bar"><i style="width:${Math.min(100,v*20)}%"></i></div>`; bars.appendChild(b) })
+                  wrap.appendChild(bars)
+                  u.appendChild(wrap)
+                })
+              }
+
+              document.getElementById('regen').onclick = ()=>{ clients = makeClients(); renderClients(); renderUsage(); }
+              document.getElementById('simulate').onclick = ()=>{ // simulate a new day: rotate data
+                clients.forEach((c,i)=>{ c.days.shift(); c.days.push(Math.floor(Math.random()*6)); c.lastActive = new Date() }); renderClients(); renderUsage(); }
+
+              function renderTopHabits(){
+                const node = document.getElementById('topHabits'); node.innerHTML=''
+                request('/habits').then(habits =>{
+                  // simulate scores based on name hash
+                  const scored = habits.map(h=>({h,score: Math.abs(hashCode(h.name)) % 100})).sort((a,b)=>b.score-a.score).slice(0,5)
+                  scored.forEach(s => { const r = el('div'); r.style.display='flex'; r.style.justifyContent='space-between'; r.style.marginTop='8px'; r.innerHTML = `<div>${escapeHtml(s.h.name)}</div><div class="muted">${s.score}%</div>`; node.appendChild(r) })
+                }).catch(()=>{ node.innerHTML = '<div class="muted">No data</div>' })
+              }
+
+              function hashCode(str){ let h=0; for(let i=0;i<str.length;i++){ h = (Math.imul(31,h) + str.charCodeAt(i))|0 } return h }
+
+              // init
+              renderClients(); renderUsage(); loadHabits(); renderTopHabits();
+
+            </script>
+          </body>
+        </html>

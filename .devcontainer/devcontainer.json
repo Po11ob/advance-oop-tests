@@ -1,0 +1,51 @@
+{
+  "name": "Advance OOP Tests Devcontainer",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+  "features": {
+    "ghcr.io/devcontainers/features/java": {
+      "version": "17"
+    },
+    "ghcr.io/devcontainers/features/maven": {},
+    "ghcr.io/devcontainers/features/node": {
+      "version": "20"
+    }
+  },
+  "postCreateCommand": "mvn -f backend -DskipTests package || true && cd frontend && npm install || true",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "vscjava.vscode-java-pack",
+        "redhat.java",
+        "ms-azuretools.vscode-docker",
+        "esbenp.prettier-vscode",
+        "dbaeumer.vscode-eslint"
+      ]
+    }
+  },
+  "forwardPorts": [8080, 3000]
+}
+{
+  "name": "Advance OOP Tests",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "22"
+    },
+    "ghcr.io/devcontainers/features/java:1": {
+      "version": "17"
+    },
+    "ghcr.io/devcontainers/features/maven:1": {}
+  },
+  "forwardPorts": [3000, 5173, 8080],
+  "postCreateCommand": "bash -lc 'cd frontend && npm install || true && cd ../fronted || true'",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "vscjava.vscode-java-pack",
+        "ms-azuretools.vscode-docker",
+        "esbenp.prettier-vscode",
+        "dbaeumer.vscode-eslint"
+      ]
+    }
+  }
+}
